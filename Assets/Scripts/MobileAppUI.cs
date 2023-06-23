@@ -16,11 +16,13 @@ namespace MobileApp.UI
 
         private void OpenOptionsWindow()
         {
+            mainMenu.SetActive(false);
             chooseOption.SetActive(true);
         }
 
         private void OpenCameraWindow()
         {
+            mainMenu.SetActive(false);
             openCamera.SetActive(true);
         }
 
@@ -29,11 +31,17 @@ namespace MobileApp.UI
             modal.SetActive(true);
         }
 
+        public void ActivateMenu()
+        {
+            mainMenu.SetActive(true);
+        }
+
         private void OnEnable()
         {
             UIMenu.openOptsWindow += OpenOptionsWindow;
             UIMenu.openCamWindow += OpenCameraWindow;
             UIChooseOption.launchModal += OpenModal;
         }
+        
     }
 }

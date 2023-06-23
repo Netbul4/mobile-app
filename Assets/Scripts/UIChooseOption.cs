@@ -9,6 +9,7 @@ namespace MobileApp.UI
 {
     public class UIChooseOption : MonoBehaviour
     {
+        [SerializeField] MobileAppUI mobileApp;
         [SerializeField] Button launchModalButton;
         [SerializeField] Button backButton;
         [SerializeField] TextMeshProUGUI messageText;
@@ -28,6 +29,9 @@ namespace MobileApp.UI
 
         private void Back()
         {
+            messageText.text = "";
+            messageText.gameObject.SetActive(false);
+            mobileApp.ActivateMenu();
             gameObject.SetActive(false);
         }
 

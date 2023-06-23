@@ -1,14 +1,19 @@
+using MobileApp.UI;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
+using System.Collections;
 
 namespace MobileApp
 {
     public class OpenCamera : MonoBehaviour
     {
         [Header("References")]
+        [SerializeField] MobileAppUI mobileApp;
         [SerializeField] RawImage background;
         [SerializeField] Image camLogo;
         [SerializeField] AspectRatioFitter fit;
+        [SerializeField] Button takePhotoButton;
         [SerializeField] Button backButton;
 
         // Non-In-Inspector References
@@ -74,14 +79,37 @@ namespace MobileApp
 
         }
 
+        public void TakePhoto()
+        {
+            StartCoroutine(Photo());
+        }
+
+        IEnumerator Photo()
+        {
+
+            yield return new WaitForEndOfFrame();
+
+            Texture2D photo = new Texture2D(backCam.width, backCam.height);
+            photo.SetPixels(backCam.GetPixels());
+            photo.Apply();
+
+            //Encode to a PNG
+            byte[] bytes = photo.EncodeToPNG();
+
+            //File.WriteAllBytes(Application.dataPath + "/photo.png", bytes);
+            NativeGallery.SaveImageToGallery(photo, "Mobile App", "Photo");
+        }
+
         private void Back()
         {
+            mobileApp.ActivateMenu();
             gameObject.SetActive(false);
         }
 
         private void OnEnable()
         {
             backButton.onClick.AddListener(Back);
+            takePhotoButton.onClick.AddListener(TakePhoto);
         }
 
         private void OnDisable()
